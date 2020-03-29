@@ -11,12 +11,21 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-	var presenter: HomePresenterProtocol?
+    
+    @IBOutlet weak var tabBarView: STabBarView!
+    
+    var presenter: HomePresenterProtocol?
 
 	override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarView.delegate = self
     }
+}
 
+extension HomeViewController: STabBarViewDelegate {
+    func tabBarItemWasTapped(at: TabBarItemTag) {
+        presenter?.tabBarTapped(tag: at)
+    }
 }
 
 extension HomeViewController: HomeViewProtocol {

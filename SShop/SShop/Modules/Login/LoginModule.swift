@@ -13,16 +13,17 @@ import UIKit
 class LoginModule: LoginBuilderProtocol {
     
     static func build() -> UIViewController {
-           // Change to get view from storyboard if not using progammatic UI
-           let view = LoginViewController(nibName: nil, bundle: nil)
-           let interactor = LoginInteractor()
-           let router = LoginRouter()
-           let presenter = LoginPresenter(view: view, interactor: interactor, router: router)
+        // Change to get view from storyboard if not using progammatic UI
+        let view = LoginViewController(nibName: nil, bundle: nil)
+        let interactor = LoginInteractor()
+        let router = LoginRouter()
+        let presenter = LoginPresenter(view: view, interactor: interactor, router: router)
+
+        view.presenter = presenter
+        interactor.presenter = presenter
+        router.viewController = view
+        router.navigationController = AppDelegate.shared?.navigationController
            
-           view.presenter = presenter
-           interactor.presenter = presenter
-           router.viewController = view
-           
-           return view
-       }
+        return view
+    }
 }

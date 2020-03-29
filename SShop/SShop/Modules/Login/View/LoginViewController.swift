@@ -17,52 +17,38 @@ import GoogleSignIn
 class LoginViewController: UIViewController {
     //MARK: - variables
     var presenter: LoginPresenterProtocol?
-    weak var ssLoginManager = SSLoginManager.shared
     
     //MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        ssLoginManager?.presentingViewController = self
-        ssLoginManager?.delegate = self
+        SLoginManager.shared.delegate = self
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     //MARK: - actions
     @IBAction func loginFbTapped(_ sender: UIButton) {
         print("login facebook tapped")
-        ssLoginManager?.login(with: .facebook)
+        presenter?.preformLogin(self, with: .facebook)
     }
     
     @IBAction func loginGgTapped(_ sender: UIButton) {
         print("google tapped")
-        ssLoginManager?.login(with: .google)
+        presenter?.preformLogin(self, with: .google)
+    }
+    
+    @IBAction func closeButtonTapped(_ sender: UIButton) {
+        presenter?.closeTapped()
     }
 }
 
-extension LoginViewController: SSLoginManagerDelegate {
+extension LoginViewController: LoginViewProtocol, LoginManagerDelegate {
     func loginDidComplete() {
-        print("login did complete")
-        backToAccountView()
+        print("LOGIN did complete")
+        presenter?.loginCompleted()
     }
     
     func logoutDidComplete() {
         print("logout did complete")
-        backToAccountView()
+        // do nothing
     }
-}
-
-extension LoginViewController {
-    
-    func backToAccountView() {
-        guard let vc = AccountModule.build() as? AccountViewController else {
-            return
-        }
-        print("user: \(ssLoginManager?.getUser())")
-        vc.modalPresentationStyle = .overFullScreen
-        present(vc, animated: true, completion: nil)
-    }
-}
-
-extension LoginViewController: LoginViewProtocol {
-    
 }

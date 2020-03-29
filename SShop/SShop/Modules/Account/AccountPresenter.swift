@@ -11,6 +11,7 @@
 import UIKit
 
 class AccountPresenter: AccountPresenterProtocol {
+    
     weak private var view: AccountViewProtocol?
     var interactor: AccountInteractorInputProtocol?
     private let router: AccountWireframeProtocol
@@ -20,7 +21,26 @@ class AccountPresenter: AccountPresenterProtocol {
         self.interactor = interactor
         self.router = router
     }
-
+    
+    func openLoginView() {
+        router.goToLoginScene()
+    }
+    
+    func performLogout() {
+        SLoginManager.shared.logout()
+    }
+    
+    func tabBarTapped(tag: TabBarItemTag) {
+        router.switchToTab(tag)
+    }
+    
+    func loginCompleted() {
+        view?.reloadView()
+    }
+    
+    func logoutCompleted() {
+        view?.reloadView()
+    }
 }
 
 extension AccountPresenter: AccountInteractorOutputProtocol {

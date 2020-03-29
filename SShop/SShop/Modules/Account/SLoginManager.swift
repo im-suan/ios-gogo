@@ -25,9 +25,7 @@ class SLoginManager: NSObject {
             }
         }
     }
-    private var context: NSManagedObjectContext? {
-        return (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
-    }
+    private var context: NSManagedObjectContext? = AppDelegate.shared?.persistentContainer.viewContext
 
     private override init(){
         print("init ssloginmanager")
@@ -142,13 +140,14 @@ extension SLoginManager {
     private func resetUserInfo() {
         guard let context = context else { return }
         let fetchRequest: NSFetchRequest<UserMO> = UserMO.fetchRequest()
-        fetchRequest.returnsObjectsAsFaults = false
 
         do {
             let results = try context.fetch(fetchRequest)
             for umo in results {
                 context.delete(umo)
             }
+            do { try context.save() }
+            catch { print("Error saving context: \(error.localizedDescription)") }
         } catch let error as NSError {
             print("Delete all data error : \(error) \(error.userInfo)")
         }
@@ -168,7 +167,7 @@ extension SLoginManager {
                     guard let result = result as? [String: Any] else { return }
                     let user = User(id: result["id"] as? String ?? "unknown",
                                     name: result["name"] as? String ?? "",
-                                    service: SSLoginService.facebook,
+                                    service: .facebook,
                                     picture: nil,
                                     email: result["email"] as? String,
                                     phone: result["phone"] as? String)
@@ -194,7 +193,7 @@ extension SLoginManager {
         let request: NSFetchRequest<UserMO> = UserMO.fetchRequest()
         do {
             let data = try context.fetch(request)
-            guard data.count > 0, let umo = data[0] as? UserMO, umo.service != nil, let service = SSLoginService(rawValue: umo.service!) else { return nil }
+            guard data.count > 0, let umo = data[0] as? UserMO, umo.service != nil, let service = LoginService(rawValue: umo.service!) else { return nil }
             
             let u = User(id: umo.id ?? "unknown", name: umo.name ?? "-", service: service, picture:nil, email: umo.email, phone: umo.phone)
             if let picData = umo.picture, let pic = UIImage(data: picData) {

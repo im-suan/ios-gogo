@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+protocol TabBarHandlerProtocol {
+    func switchToTab(_ tag: TabBarItemTag)
+}

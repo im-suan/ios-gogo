@@ -48,12 +48,14 @@
 		BC74769523FA882C00F4E076 /* AccountProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC74768E23FA882C00F4E076 /* AccountProtocols.swift */; };
 		BC74769623FA882C00F4E076 /* AccountInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC74768F23FA882C00F4E076 /* AccountInteractor.swift */; };
 		BC7476A823FAA08000F4E076 /* CustomUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7476A723FAA08000F4E076 /* CustomUI.swift */; };
-		BCA077A7241F38BE00136F88 /* SSLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA077A6241F38BE00136F88 /* SSLoginManager.swift */; };
+		BC9116FC24308469006AA438 /* TabBarHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9116FB24308469006AA438 /* TabBarHandlerProtocol.swift */; };
+		BCA077A7241F38BE00136F88 /* SLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA077A6241F38BE00136F88 /* SLoginManager.swift */; };
 		BCB3246D240FA3F1003EEF0A /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB3246B240FA3F1003EEF0A /* AccountViewController.swift */; };
 		BCB3246E240FA3F1003EEF0A /* AccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCB3246C240FA3F1003EEF0A /* AccountViewController.xib */; };
 		BCB32472240FA667003EEF0A /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB32470240FA667003EEF0A /* AccountTableViewCell.swift */; };
 		BCB32473240FA667003EEF0A /* AccountTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BCB32471240FA667003EEF0A /* AccountTableViewCell.xib */; };
 		BCB32475240FAEE1003EEF0A /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB32474240FAEE1003EEF0A /* AccountInfo.swift */; };
+		BCF6228C242DD02A00D54179 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF6228B242DD02A00D54179 /* BaseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,12 +104,14 @@
 		BC74768E23FA882C00F4E076 /* AccountProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProtocols.swift; sourceTree = "<group>"; };
 		BC74768F23FA882C00F4E076 /* AccountInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInteractor.swift; sourceTree = "<group>"; };
 		BC7476A723FAA08000F4E076 /* CustomUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUI.swift; sourceTree = "<group>"; };
-		BCA077A6241F38BE00136F88 /* SSLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSLoginManager.swift; sourceTree = "<group>"; };
+		BC9116FB24308469006AA438 /* TabBarHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarHandlerProtocol.swift; sourceTree = "<group>"; };
+		BCA077A6241F38BE00136F88 /* SLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLoginManager.swift; sourceTree = "<group>"; };
 		BCB3246B240FA3F1003EEF0A /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		BCB3246C240FA3F1003EEF0A /* AccountViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountViewController.xib; sourceTree = "<group>"; };
 		BCB32470240FA667003EEF0A /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
 		BCB32471240FA667003EEF0A /* AccountTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountTableViewCell.xib; sourceTree = "<group>"; };
 		BCB32474240FAEE1003EEF0A /* AccountInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
+		BCF6228B242DD02A00D54179 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,7 +190,6 @@
 		BC2A403E2418C9A5002D0F48 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				BCA077A6241F38BE00136F88 /* SSLoginManager.swift */,
 				BC2A40322418C986002D0F48 /* LoginViewController.swift */,
 				BC2A40352418C986002D0F48 /* LoginViewController.xib */,
 			);
@@ -248,6 +251,7 @@
 		BC74767823FA879500F4E076 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BCF6228B242DD02A00D54179 /* BaseViewController.swift */,
 				BC7476A723FAA08000F4E076 /* CustomUI.swift */,
 				BC729F212412578700E6FD44 /* AccountAlertTableViewCell */,
 				BCB3246F240FA5D4003EEF0A /* AccountTableViewCell */,
@@ -263,6 +267,7 @@
 				BC74768823FA880900F4E076 /* Home */,
 				BC148CFB2411FD6700C9165F /* AccountDetail */,
 				BC2A403D2418C98E002D0F48 /* Login */,
+				BC9116FB24308469006AA438 /* TabBarHandlerProtocol.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -283,6 +288,7 @@
 		BC74768923FA881500F4E076 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				BCA077A6241F38BE00136F88 /* SLoginManager.swift */,
 				BC74768A23FA882C00F4E076 /* AccountModule.swift */,
 				BC74768B23FA882C00F4E076 /* AccountPresenter.swift */,
 				BC74768C23FA882C00F4E076 /* AccountRouter.swift */,
@@ -471,6 +477,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC9116FC24308469006AA438 /* TabBarHandlerProtocol.swift in Sources */,
 				BC2A403B2418C986002D0F48 /* LoginInteractor.swift in Sources */,
 				BC74769323FA882C00F4E076 /* AccountRouter.swift in Sources */,
 				BC148CF92411FD5E00C9165F /* AccountDetailInteractor.swift in Sources */,
@@ -482,13 +489,14 @@
 				BC74768323FA880100F4E076 /* HomeRouter.swift in Sources */,
 				BC74768623FA880100F4E076 /* HomeInteractor.swift in Sources */,
 				BC148CF42411FD5E00C9165F /* AccountDetailModule.swift in Sources */,
+				BCF6228C242DD02A00D54179 /* BaseViewController.swift in Sources */,
 				BC74768423FA880100F4E076 /* HomeViewController.swift in Sources */,
 				BC74768523FA880100F4E076 /* HomeProtocols.swift in Sources */,
 				BC275268241A240E00FDE0DC /* User.swift in Sources */,
 				BC2A40392418C986002D0F48 /* LoginViewController.swift in Sources */,
 				BC148CF72411FD5E00C9165F /* AccountDetailViewController.swift in Sources */,
 				BC74768123FA880100F4E076 /* HomeModule.swift in Sources */,
-				BCA077A7241F38BE00136F88 /* SSLoginManager.swift in Sources */,
+				BCA077A7241F38BE00136F88 /* SLoginManager.swift in Sources */,
 				BC7476A823FAA08000F4E076 /* CustomUI.swift in Sources */,
 				BC148CF62411FD5E00C9165F /* AccountDetailRouter.swift in Sources */,
 				BC74769623FA882C00F4E076 /* AccountInteractor.swift in Sources */,

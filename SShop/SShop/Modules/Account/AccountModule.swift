@@ -21,6 +21,7 @@ class AccountModule: AccountBuilderProtocol {
         view.presenter = presenter
         interactor.presenter = presenter
         router.viewController = view
+        router.navigationController = AppDelegate.shared?.navigationController
 
         return view
     }

@@ -12,5 +12,23 @@ import UIKit
 
 class HomeRouter: HomeWireframeProtocol {
     weak var viewController: UIViewController?
-    
+    weak var navigationController: UINavigationController?
+}
+
+extension HomeRouter: TabBarHandlerProtocol {
+    func switchToTab(_ tag: TabBarItemTag) {
+        guard let nav = navigationController else {
+            print("warning: navigationController is nil")
+            return
+        }
+        
+        switch tag {
+        case .home:
+            print("Stay here")
+        case .account:
+            nav.pushViewController(AccountModule.build(), animated: true)
+        default:
+            print("Home -> tag \(tag)")
+        }
+    }
 }

@@ -24,49 +24,32 @@ class AccountViewController: UIViewController {
     @IBOutlet weak var userImage: UIImageView!
     
     //MARK: - variables
-    static let cellId = "AccountTableCell"
     private let menu = [
         [DetailView.order, DetailView.contact],
         [DetailView.policy, DetailView.call],
         [DetailView.logout]
     ]
-    private var isLogged: Bool = false {
-        didSet {
-            if isLogged != oldValue {
-                reloadData()
-            }
-        }
-    }
-    var user: User? {
-        didSet {
-            isLogged = (user != nil)
-        }
-    }
+    var user: User? = nil
     var accountMenuItems: [[AccountMenuItem]] = []
     var presenter: AccountPresenterProtocol?
-    weak var ssLoginManager = SSLoginManager.shared
     
     //MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("AccountViewController: view did load")
-        ssLoginManager?.presentingViewController = self
-        ssLoginManager?.delegate = self
+        navigationController?.setNavigationBarHidden(true, animated: false)
         
-        user = ssLoginManager?.getUser()
-        print(user)
-        print(isLogged)
-        initData()
+        SLoginManager.shared.delegate = self
         tabBarView.delegate = self
+        loadData()
         setupTable()
         setupTopView()
     }
     
     private func setupTopView() {
-        accountInfoTopView.isHidden = !isLogged
-        accountLoginView.isHidden = isLogged
+        accountInfoTopView.isHidden = (user == nil)
+        accountLoginView.isHidden = !accountInfoTopView.isHidden
         
-        if isLogged, let user = user {
+        if let user = user {
             userNameLabel.text = user.name
             userImage.image = user.picture
         }
@@ -75,59 +58,29 @@ class AccountViewController: UIViewController {
     private func setupTable() {
         accountMenuTable.delegate = self
         accountMenuTable.dataSource = self
-        let bundle = Bundle(for: type(of: self))
-        let nib = UINib(nibName: "AccountTableViewCell", bundle: bundle)
-        accountMenuTable.register(nib, forCellReuseIdentifier: AccountViewController.cellId)
+        accountMenuTable.registerCell(AccountTableViewCell.self)
     }
 
-    private func initData() {
+    private func loadData() {
+        user = SLoginManager.shared.getUser()
         accountMenuItems = [
             [AccountMenuItem(icon: #imageLiteral(resourceName: "orderChecklist"), title: "Quản lý đơn hàng", count: 5),
              AccountMenuItem(icon: #imageLiteral(resourceName: "bookmark"), title: "Sổ địa chỉ", count: 3)],
             [AccountMenuItem(icon: #imageLiteral(resourceName: "guaranteeChecked"), title: "Chính sách và điều khoản", count: nil),
              AccountMenuItem(icon: #imageLiteral(resourceName: "callCenter"), title: "Liên hệ 1900 1009", count: nil)]
         ]
-        if isLogged {
+        if user != nil {
             accountMenuItems.append([AccountMenuItem(icon: #imageLiteral(resourceName: "logout"), title: "Đăng xuất", count:nil, hideButton: true)])
         }
     }
     
-    private func reloadData() {
-        initData()
-        accountMenuTable?.reloadData()
-    }
-    
     //MARK: - actions
     @IBAction func loginButtonTapped(_ sender: UIButton) {
-        let vc = LoginModule.build()
-        vc.modalPresentationStyle = .popover
-        present(vc, animated: true, completion: nil)
+        presenter?.openLoginView()
     }
     
     @IBAction func editAccountInfoTapped(_ sender: UIButton) {
         print("edit account info tapped")
-    }
-    
-}
-
-extension AccountViewController: SSLoginManagerDelegate {
-    func loginDidComplete() {
-        print("login did complete")
-        backToAccountView()
-    }
-    
-    func logoutDidComplete() {
-        print("logout did complete")
-        backToAccountView()
-    }
-    
-    private func backToAccountView() {
-        guard let vc = AccountModule.build() as? AccountViewController else {
-            return
-        }
-        print("user: \(ssLoginManager?.getUser())")
-        vc.modalPresentationStyle = .overFullScreen
-        present(vc, animated: true, completion: nil)
     }
 }
 
@@ -135,23 +88,17 @@ extension AccountViewController: SSLoginManagerDelegate {
 extension AccountViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        print("number of sections: \(menu.count-1)")
-        return isLogged ? menu.count : menu.count - 1
+        return accountMenuItems.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("number of row in section[\(section)]: \(accountMenuItems[section].count)")
         return accountMenuItems[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("AccountViewController > cellForRowAt \(indexPath.row)")
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AccountViewController.cellId, for: indexPath) as? AccountTableViewCell else {
-            fatalError("The dequeued cell is not an instance of \(AccountViewController.cellId).")
-        }
-        let item = accountMenuItems[indexPath.section][indexPath.row]
-        print("s: \(indexPath.section), r: \(indexPath.row)")
-        cell.accountMenuItem = item
+        let cell = tableView.dequeueCell(AccountTableViewCell.self, at: indexPath) as AccountTableViewCell
+        cell.accountMenuItem = accountMenuItems[indexPath.section][indexPath.row]
         cell.delegate = self
         return cell
     }
@@ -160,9 +107,7 @@ extension AccountViewController: UITableViewDataSource {
 extension AccountViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AccountViewController.cellId, for: indexPath) as? AccountTableViewCell else {
-            fatalError("The dequeued cell is not an instance of \(AccountViewController.cellId).")
-        }
+        let cell = tableView.dequeueCell(AccountTableViewCell.self, at: indexPath) as AccountTableViewCell
         viewDetail(of: cell)
     }
 }
@@ -174,7 +119,7 @@ extension AccountViewController: AccountMenuItemDelegate {
         guard let cellIndex = accountMenuTable.indexPath(for: cell) else {
             return
         }
-        print("go to detail at section:\(cellIndex.section), row:\(cellIndex.row)")
+//        print("go to detail at section:\(cellIndex.section), row:\(cellIndex.row)")
         let detailView = menu[cellIndex.section][cellIndex.row]
         switch detailView {
         case .order:
@@ -187,14 +132,32 @@ extension AccountViewController: AccountMenuItemDelegate {
             print("view call")
         case .logout:
             print("logout")
-            ssLoginManager?.logout()
+            presenter?.performLogout()
         }
     }
 }
 
 //MARK: - AccountViewProtocol
 extension AccountViewController: AccountViewProtocol {
+    func reloadView() {
+        loadData()
+        setupTopView()
+        accountMenuTable.reloadData()
+    }
+}
+
+//MARK: - LoginManagerDelegate
+extension AccountViewController: LoginManagerDelegate {
+    func loginDidComplete() {
+        print("login did complete")
+        presenter?.loginCompleted()
+    }
     
+    func logoutDidComplete() {
+        print("logout did complete")
+        print("user ? nil: \(SLoginManager.shared.getUser() == nil ? true : false)")
+        presenter?.logoutCompleted()
+    }
 }
 
 //MARK: - STabBarViewDelegate
@@ -202,19 +165,6 @@ extension AccountViewController: STabBarViewDelegate {
     
     func tabBarItemWasTapped(at: TabBarItemTag) {
         print("AccountViewController tabBarItemWasTapped at \(at)")
-        switch at {
-        case .home:
-            let vc = HomeModule.build()
-            vc.modalPresentationStyle = .overFullScreen
-            present(vc, animated: true, completion: nil)
-            print("AccountViewController go to home")
-        case .account:
-            let vc = AccountModule.build()
-            vc.modalPresentationStyle = .overFullScreen
-            present(vc, animated: true, completion: nil)
-            print("AccountViewController go to account")
-        default:
-            print("AccountViewController go to tag \(at)")
-        }
+        presenter?.tabBarTapped(tag: at)
     }
 }

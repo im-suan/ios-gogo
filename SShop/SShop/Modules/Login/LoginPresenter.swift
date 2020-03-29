@@ -20,5 +20,16 @@ class LoginPresenter: LoginPresenterProtocol {
         self.interactor = interactor
         self.router = router
     }
-
+        
+    func preformLogin(_ view: UIViewController, with service: LoginService) {
+        SLoginManager.shared.login(from: view, with: service)
+    }
+    
+    func loginCompleted() {
+        router.backToAccountScence()
+    }
+    
+    func closeTapped() {
+        router.backToAccountScence()
+    }
 }
