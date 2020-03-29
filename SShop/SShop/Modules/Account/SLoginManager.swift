@@ -1,5 +1,5 @@
 //
-//  SSLoginManager.swift
+//  SLoginManager.swift
 //  SShop
 //
 //  Created by Nguyen Xuan on 3/16/20.
@@ -11,26 +11,18 @@ import CoreData
 import GoogleSignIn
 import FBSDKLoginKit
 
-enum SSLoginService: String {
-    case facebook
-    case google
-}
-
-protocol SSLoginManagerDelegate {
-    func loginDidComplete()
-    func logoutDidComplete()
-}
-
-class SSLoginManager: NSObject {
-    static let shared = SSLoginManager()
+class SLoginManager: NSObject {
+    static let shared = SLoginManager()
     private var currentUser: User? = nil
-    private var activeService: SSLoginService? = nil
-    var delegate: SSLoginManagerDelegate? = nil
+    private var activeService: LoginService? = nil
+    var delegate: LoginManagerDelegate? = nil
     
     weak var presentingViewController: UIViewController! {
         didSet {
-            GIDSignIn.sharedInstance()?.presentingViewController = self.presentingViewController
-            GIDSignIn.sharedInstance()?.delegate = self
+            if let gidSignIn = GIDSignIn.sharedInstance() {
+                gidSignIn.presentingViewController = self.presentingViewController
+                gidSignIn.delegate = self
+            }
         }
     }
     private var context: NSManagedObjectContext? {
@@ -43,7 +35,6 @@ class SSLoginManager: NSObject {
         
         if let clientId = Bundle.main.object(forInfoDictionaryKey: "CLIENT_ID") as? String, let gidSignIn = GIDSignIn.sharedInstance() {
             gidSignIn.clientID = clientId
-            gidSignIn.presentingViewController = presentingViewController
             gidSignIn.restorePreviousSignIn()
         }
         
@@ -59,8 +50,8 @@ class SSLoginManager: NSObject {
         return currentUser
     }
     
-    func login(with service: SSLoginService) {
-        guard presentingViewController != nil else { return }
+    func login(from view: UIViewController, with service: LoginService) {
+        presentingViewController = view
         
         switch service {
         case .facebook:
@@ -107,7 +98,7 @@ class SSLoginManager: NSObject {
 }
 
 //MARK: - GIDSignInDelegate
-extension SSLoginManager: GIDSignInDelegate {
+extension SLoginManager: GIDSignInDelegate {
 
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         print("google sign-in")
@@ -132,7 +123,7 @@ extension SSLoginManager: GIDSignInDelegate {
 }
 
 //MARK: - related user info
-extension SSLoginManager {
+extension SLoginManager {
     
     private func saveUserInfo() {
         guard let context = context, let currentUser = currentUser, let activeService = activeService else { return }
@@ -149,16 +140,17 @@ extension SSLoginManager {
     }
     
     private func resetUserInfo() {
-        guard let context = context, let _ = activeService else { return }
-        let request: NSFetchRequest<UserMO> = UserMO.fetchRequest()
+        guard let context = context else { return }
+        let fetchRequest: NSFetchRequest<UserMO> = UserMO.fetchRequest()
+        fetchRequest.returnsObjectsAsFaults = false
+
         do {
-            let data = try context.fetch(request)
-            guard data.count > 0, let umo = data[0] as? UserMO else { return }
-            context.delete(umo)
-            do { try context.save() }
-            catch { throw error }
-        } catch {
-            print("Error when reseting user info: \(error.localizedDescription)")
+            let results = try context.fetch(fetchRequest)
+            for umo in results {
+                context.delete(umo)
+            }
+        } catch let error as NSError {
+            print("Delete all data error : \(error) \(error.userInfo)")
         }
     }
     
