@@ -12,5 +12,32 @@ import UIKit
 
 class AccountRouter: AccountWireframeProtocol {
     weak var viewController: UIViewController?
+    weak var navigationController: UINavigationController?
     
+    func goToLoginScene() {
+        guard let nav = navigationController else {
+            print("warning: navigationController is nil")
+            return
+        }
+        let loginVC = LoginModule.build()
+        nav.pushViewController(loginVC, animated: true)
+    }
+}
+
+extension AccountRouter: TabBarHandlerProtocol {
+    func switchToTab(_ tag: TabBarItemTag) {
+        guard let nav = navigationController else {
+            print("warning: navigationController is nil")
+            return
+        }
+        
+        switch tag {
+        case .home:
+            nav.pushViewController(HomeModule.build(), animated: true)
+        case .account:
+            print("Stay here")
+        default:
+            print("Account -> tag \(tag)")
+        }
+    }
 }

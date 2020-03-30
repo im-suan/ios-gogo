@@ -8,6 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="SShop" customModuleProvider="target">
             <connections>
+                <outlet property="tabBarView" destination="VYY-eN-bPS" id="YWA-91-r1l"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="Dhm-18-bs4"/>
             </connections>
         </placeholder>
@@ -17,18 +18,29 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home Scene" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tq9-0X-Ha8">
-                    <rect key="frame" x="0.0" y="315.5" width="375" height="36"/>
+                    <rect key="frame" x="0.0" y="56" width="375" height="555"/>
                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VYY-eN-bPS" customClass="STabBarView" customModule="SShop" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="611" width="375" height="56"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="56" id="DdY-YA-prD"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Tq9-0X-Ha8" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Lzq-Z7-Wqj"/>
-                <constraint firstItem="Tq9-0X-Ha8" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="MVX-kZ-aG2"/>
+                <constraint firstAttribute="bottom" secondItem="VYY-eN-bPS" secondAttribute="bottom" id="P1H-1K-t0D"/>
                 <constraint firstAttribute="trailing" secondItem="Tq9-0X-Ha8" secondAttribute="trailing" id="Rdg-2X-AHM"/>
                 <constraint firstItem="Tq9-0X-Ha8" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="cw6-j8-Tdh"/>
+                <constraint firstAttribute="trailing" secondItem="VYY-eN-bPS" secondAttribute="trailing" id="efo-G6-tjC"/>
+                <constraint firstItem="Tq9-0X-Ha8" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="lWG-oI-lm2"/>
+                <constraint firstItem="Tq9-0X-Ha8" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="ofs-aZ-9ve"/>
+                <constraint firstItem="VYY-eN-bPS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="xQp-6F-Row"/>
+                <constraint firstItem="VYY-eN-bPS" firstAttribute="top" secondItem="Tq9-0X-Ha8" secondAttribute="bottom" id="zC9-95-1F7"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="136.80000000000001" y="152.47376311844079"/>

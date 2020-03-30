@@ -12,5 +12,15 @@ import UIKit
 
 class LoginRouter: LoginWireframeProtocol {
     weak var viewController: UIViewController?
+    weak var navigationController: UINavigationController?
     
+    func backToAccountScence() {
+        guard let nav = navigationController else {
+            print("LoginRouter > No navigationController")
+            return
+        }
+        
+        let accountVC = AccountModule.build()
+        nav.pushViewController(accountVC, animated: true)
+    }
 }

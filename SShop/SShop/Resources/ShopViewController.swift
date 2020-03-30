@@ -15,28 +15,27 @@ class ShopViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarView.delegate = self
+        AppDelegate.shared?.navigationController = navigationController
     }
 }
 
 extension ShopViewController: STabBarViewDelegate {
     
     func tabBarItemWasTapped(at: TabBarItemTag) {
-        print("navigationController ? nil : \(navigationController == nil)")
+        guard let nav = navigationController else {
+            print("No navigationController")
+            return
+        }
+        
         switch at {
         case .home:
-            print("go to home")
-            let vc = HomeModule.build()
-//            vc.modalPresentationStyle = .overFullScreen
-//            present(vc, animated: true, completion: nil)
-            navigationController?.pushViewController(vc, animated: true)
+            nav.pushViewController(HomeModule.build(), animated: true)
+            print("AccountViewController go to home")
         case .account:
-            print("go to account")
-            let vc = AccountModule.build()
-//            vc.modalPresentationStyle = .overFullScreen
-//            present(vc, animated: true, completion: nil)
-            navigationController?.pushViewController(vc, animated: true)
+            nav.pushViewController(AccountModule.build(), animated: true)
+            print("AccountViewController go to account")
         default:
-            print("go to tag \(at)")
+            print("AccountViewController go to tag \(at)")
         }
     }
 }

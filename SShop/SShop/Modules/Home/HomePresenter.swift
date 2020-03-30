@@ -20,7 +20,10 @@ class HomePresenter: HomePresenterProtocol {
         self.interactor = interactor
         self.router = router
     }
-
+    
+    func tabBarTapped(tag: TabBarItemTag) {
+        router.switchToTab(tag)
+    }
 }
 
 extension HomePresenter: HomeInteractorOutputProtocol {

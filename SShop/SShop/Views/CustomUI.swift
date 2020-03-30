@@ -11,11 +11,27 @@ import UIKit
 //MARK: - UIView extension
 extension UIView {
     
-    func loadNib() -> UIView {
-        let bundle = Bundle(for: type(of: self))
-        let nibName = type(of: self).description().components(separatedBy: ".").last!
-        let nib = UINib(nibName: nibName, bundle: bundle)
-        return nib.instantiate(withOwner: self, options: nil).first as! UIView
+    func loadNib<T: UIView>(_ view: T.Type) -> T {
+        let nibName = String(describing: view)
+        let nib = UINib(nibName: nibName, bundle: nil)
+        return nib.instantiate(withOwner: self, options: nil).first as! T
+    }
+}
+
+extension UITableView {
+    func registerCell<T: UITableViewCell>(_ cell: T.Type) {
+        let nibName = String(describing: cell)
+        let nib = UINib(nibName: nibName, bundle: nil)
+        let cellName = String(describing: cell)
+        self.register(nib, forCellReuseIdentifier: cellName)
+    }
+    
+    func dequeueCell<T: UITableViewCell>(_ cell: AnyClass, at: IndexPath) -> T! {
+        let cellName = String(describing: cell)
+        guard let cell = dequeueReusableCell(withIdentifier: cellName, for: at) as? T else {
+            fatalError("\(cellName) is not registed")
+        }
+        return cell
     }
 }
 

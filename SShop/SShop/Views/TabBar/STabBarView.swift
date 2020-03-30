@@ -34,7 +34,6 @@ class STabBarView: UIView {
     
     //MARK: - init
     override init(frame: CGRect) {
-        print("STabBarView > init with frame")
         super.init(frame: frame)
         commonInit()
     }
@@ -48,18 +47,15 @@ class STabBarView: UIView {
     }
 
     func commonInit() {
-        print("STabBarView > common init")
         xibSetUp()
         setupTabBarItems()
     }
     
     private func xibSetUp() {
-        print("STabBarView > xibSetUp lalala")
-        contentView = loadNib()
+        contentView = loadNib(STabBarView.self)
         contentView.frame = self.bounds
         contentView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(contentView)
-        print("STabBarView subview added")
         
         NSLayoutConstraint.activate([
          contentView.topAnchor.constraint(equalTo: topAnchor),
@@ -70,7 +66,6 @@ class STabBarView: UIView {
     }
     
     func setupTabBarItems() {
-        print("setupTabBarItems")
         homeTabItem.tabBarItemButton.tag = TabBarItemTag.home.rawValue
         homeTabItem.delegate = self
         homeTabItem.backgroundColor = #colorLiteral(red: 0.9474372268, green: 0.2219972312, blue: 0.289686054, alpha: 1)
@@ -96,11 +91,9 @@ class STabBarView: UIView {
 //MARK: - STabBarItemDelegate
 extension STabBarView: STabBarItemDelegate {
     func itemWasTapped(by sender: UIButton?) {
-        print("STabBarView - item was tapped \(sender?.tag ?? -1)")
-        if let buttonTag = sender?.tag {
-            if let position = TabBarItemTag(rawValue: buttonTag) {
-                delegate?.tabBarItemWasTapped(at: position)
-            }
+        guard let buttonTag = sender?.tag, let position = TabBarItemTag(rawValue: buttonTag), let delegate = delegate else {
+            return
         }
+        delegate.tabBarItemWasTapped(at: position)
     }
 }

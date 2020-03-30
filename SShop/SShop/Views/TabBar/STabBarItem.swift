@@ -22,7 +22,7 @@ class STabBarItem: UIView {
     var tabBarItemButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        print("STabBarItem > return button")
+//        print("STabBarItem > return button")
         return button
     }()
         
@@ -30,14 +30,14 @@ class STabBarItem: UIView {
     
     //MARK: - init
     override init(frame: CGRect) {
-        print("STabBarItem > init with frame")
+//        print("STabBarItem > init with frame")
         super.init(frame: frame)
         commonInit()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        print("STabBarItem > init with coder [subviews: \(self.subviews.count)]")
+//        print("STabBarItem > init with coder [subviews: \(self.subviews.count)]")
         guard self.subviews.count == 0 else {
             return
         }
@@ -45,7 +45,7 @@ class STabBarItem: UIView {
     }
 
     func commonInit() {
-        print("STabBarItem > common init add subviews")
+//        print("STabBarItem > common init add subviews")
         addSubview(contentView)
         NSLayoutConstraint.activate([
          contentView.topAnchor.constraint(equalTo: topAnchor),
@@ -65,7 +65,7 @@ class STabBarItem: UIView {
     
     
     @objc func tabBarItemTapped(_ sender: UIButton) {
-        print("STabBarItem > tabBarItemTapped by \(sender.tag)")
+//        print("STabBarItem > tabBarItemTapped by \(sender.tag)")
         delegate?.itemWasTapped(by: sender)
     }
 }

@@ -15,9 +15,9 @@ class User {
     var picture: UIImage? = nil
     var email: String?
     var phone: String?
-    var service: SSLoginService?
+    var service: LoginService?
     
-    init(id: String, name: String, service: SSLoginService, picture: UIImage? = nil, email: String? = nil, phone: String? = nil) {
+    init(id: String, name: String, service: LoginService, picture: UIImage? = nil, email: String? = nil, phone: String? = nil) {
         self.id = id
         self.name = name
         self.picture = picture

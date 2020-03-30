@@ -13,19 +13,10 @@ import GoogleSignIn
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-    var navController: UINavigationController?
-
+    var navigationController: UINavigationController?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-
-        let rootViewController = ShopViewController(nibName: nil, bundle: nil)
-        navController = UINavigationController(rootViewController: rootViewController)
-
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window!.rootViewController = navController
-        window!.makeKeyAndVisible()
-
         return true
     }
     
@@ -77,6 +68,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+}
 
+extension AppDelegate {
+    static var shared: AppDelegate? {
+        return UIApplication.shared.delegate as? AppDelegate
+    }
 }
 

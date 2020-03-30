@@ -17,12 +17,13 @@ protocol HomeBuilderProtocol: class {
 
 // MARK: - Wireframe
 protocol HomeWireframeProtocol: class {
-
+    func switchToTab(_ tag: TabBarItemTag)
 }
 
 // MARK: - Presenter
 protocol HomePresenterProtocol: class {
     var interactor: HomeInteractorInputProtocol? { get set }
+    func tabBarTapped(tag: TabBarItemTag)
 }
 
 // MARK: - Interactor
