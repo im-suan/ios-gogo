@@ -64,8 +64,8 @@ class AccountViewController: UIViewController {
     private func loadData() {
         user = SLoginManager.shared.getUser()
         accountMenuItems = [
-            [AccountMenuItem(icon: #imageLiteral(resourceName: "orderChecklist"), title: "Quản lý đơn hàng", count: 5),
-             AccountMenuItem(icon: #imageLiteral(resourceName: "bookmark"), title: "Sổ địa chỉ", count: 3)],
+            [AccountMenuItem(icon: #imageLiteral(resourceName: "orderChecklist"), title: "Quản lý đơn hàng", count: (user != nil ? 0 : nil)),
+             AccountMenuItem(icon: #imageLiteral(resourceName: "bookmark"), title: "Sổ địa chỉ", count: (user != nil ? 0 : nil))],
             [AccountMenuItem(icon: #imageLiteral(resourceName: "guaranteeChecked"), title: "Chính sách và điều khoản", count: nil),
              AccountMenuItem(icon: #imageLiteral(resourceName: "callCenter"), title: "Liên hệ 1900 1009", count: nil)]
         ]
